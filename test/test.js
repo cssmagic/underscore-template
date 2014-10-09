@@ -1,4 +1,7 @@
 void function () {
+	//config
+	_.templateSettings.variable = 'data'
+
 	//const
 	var TEMPLATE_ID_1 = 'paragraph'
 	var TEMPLATE_ID_2 = 'person'
@@ -94,6 +97,31 @@ void function () {
 				expect(_toTemplateId(arg)).to.equal('')
 			})
 		})
+		describe('_toElementId()', function () {
+			it('add `' + PREFIX + '` prefix', function () {
+				var arg
+				arg = 'foo'
+				expect(_toElementId(arg)).to.equal(PREFIX + 'foo')
+			})
+			it('ignore initial and ending spaces', function () {
+				var arg
+				arg = '    '
+				expect(_toElementId(arg)).to.equal(PREFIX)
+				arg = '  foo  '
+				expect(_toElementId(arg)).to.equal(PREFIX + 'foo')
+			})
+			it('convert falsy value to `' + PREFIX + '`', function () {
+				var arg
+				arg = undefined
+				expect(_toElementId(arg)).to.equal(PREFIX)
+				arg = null
+				expect(_toElementId(arg)).to.equal(PREFIX)
+				arg = false
+				expect(_toElementId(arg)).to.equal(PREFIX)
+				arg = NaN
+				expect(_toElementId(arg)).to.equal(PREFIX)
+			})
+		})
 		describe('_isTemplateCode()', function () {
 			it('do basic functionality', function () {
 				expect(_isTemplateCode(templateCode1)).to.be.true
@@ -142,6 +170,9 @@ void function () {
 	})
 
 	describe('APIs', function () {
+		//elem
+		var $body = $(document.body)
+
 		//test data
 		var data, html1, html2
 		var _cacheTemplate, _cacheCompiledTemplate
@@ -163,11 +194,11 @@ void function () {
 			$elem1 = $('<script/>', {
 				type: SCRIPT_TYPE,
 				id: PREFIX + TEMPLATE_ID_1
-			}).text(templateCode1).appendTo(_.dom.$body)
+			}).text(templateCode1).appendTo($body)
 			$elem2 = $('<script/>', {
 				type: SCRIPT_TYPE,
 				id: PREFIX + TEMPLATE_ID_2
-			}).text(templateCode2).appendTo(_.dom.$body)
+			}).text(templateCode2).appendTo($body)
 		}
 		function destroyDummyScript() {
 			$elem1.remove()
@@ -234,9 +265,8 @@ void function () {
 				html1 = template.render(TEMPLATE_ID_1, templateData1)
 				expect(html1).to.equal(result1)
 				html2 = template.render(TEMPLATE_ID_2, templateData2)
-				//todo: need `_.str.clean()`
-				html2 = html2.replace(/\s+/g, ' ')
-				result2 = result2.replace(/\s+/g, ' ')
+				html2 = _.str.clean(html2)
+				result2 = _.str.clean(result2)
 				expect(html2).to.equal(result2)
 
 				//check if template code saved to cache
@@ -253,7 +283,7 @@ void function () {
 
 				destroyDummyScript()
 			})
-			it('get template from code cache, render, and save to cache', function () {
+			it('get template from code cache, render, and save to compiled cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 
