@@ -139,6 +139,8 @@ var template = function () {
 
 	/** DEBUG_INFO_START **/
 	//exports for unit test
+	template.__toTemplateId = _toTemplateId
+	template.__toElementId = _toElementId
 	template.__isTemplateCode = _isTemplateCode
 	template.__stripCommentTag = _stripCommentTag
 	template.__cacheTemplate = _cacheTemplate

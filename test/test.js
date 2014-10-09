@@ -1,4 +1,4 @@
-describe('Template', function () {
+void function () {
 	//const
 	var TEMPLATE_ID_1 = 'paragraph'
 	var TEMPLATE_ID_2 = 'person'
@@ -33,14 +33,68 @@ describe('Template', function () {
 	].join('\n')
 
 	describe('Util', function () {
-		var _isTemplateCode, _stripCommentTag
+		var _toTemplateId
+		var _toElementId
+		var _isTemplateCode
+		var _stripCommentTag
 
 		before(function () {
-			_isTemplateCode = _.template.__isTemplateCode
-			_stripCommentTag = _.template.__stripCommentTag
+			_toTemplateId = template.__toTemplateId
+			_toElementId = template.__toElementId
+			_isTemplateCode = template.__isTemplateCode
+			_stripCommentTag = template.__stripCommentTag
 		})
 
-		describe('_.template.__isTemplateCode()', function () {
+		describe('_toTemplateId()', function () {
+			it('return directly if initial character is not space, `#` or `!`', function () {
+				var arg
+				arg = 'foobar'
+				expect(_toTemplateId(arg)).to.equal(arg)
+			})
+			it('remove `' + PREFIX + '` prefix', function () {
+				var arg
+				arg = PREFIX + 'foo'
+				expect(_toTemplateId(arg)).to.equal('foo')
+			})
+			it('remove all initial `#` and `!` characters', function () {
+				var arg
+				arg = '###foo#bar'
+				expect(_toTemplateId(arg)).to.equal('foo#bar')
+				arg = '!!!foo#bar'
+				expect(_toTemplateId(arg)).to.equal('foo#bar')
+				arg = '#!!foo!bar'
+				expect(_toTemplateId(arg)).to.equal('foo!bar')
+				arg = '#!!' + PREFIX + 'foo!bar'
+				expect(_toTemplateId(arg)).to.equal('foo!bar')
+			})
+			it('ignore initial and ending spaces', function () {
+				var arg
+				arg = '    '
+				expect(_toTemplateId(arg)).to.equal('')
+				arg = '  foo  '
+				expect(_toTemplateId(arg)).to.equal('foo')
+				arg = '  ###bar  '
+				expect(_toTemplateId(arg)).to.equal('bar')
+				arg = '  #!foobar  '
+				expect(_toTemplateId(arg)).to.equal('foobar')
+				arg = '  #!' + PREFIX + 'foo  '
+				expect(_toTemplateId(arg)).to.equal('foo')
+				arg = '  #!  ' + PREFIX + 'bar  '
+				expect(_toTemplateId(arg)).to.equal('bar')
+			})
+			it('convert falsy value to empty string', function () {
+				var arg
+				arg = undefined
+				expect(_toTemplateId(arg)).to.equal('')
+				arg = null
+				expect(_toTemplateId(arg)).to.equal('')
+				arg = false
+				expect(_toTemplateId(arg)).to.equal('')
+				arg = NaN
+				expect(_toTemplateId(arg)).to.equal('')
+			})
+		})
+		describe('_isTemplateCode()', function () {
 			it('do basic functionality', function () {
 				expect(_isTemplateCode(templateCode1)).to.be.true
 				expect(_isTemplateCode(templateCode2)).to.be.true
@@ -61,7 +115,7 @@ describe('Template', function () {
 				expect(_isTemplateCode(code)).to.be.false
 			})
 		})
-		describe('_.template.__stripCommentTag()', function () {
+		describe('_stripCommentTag()', function () {
 			it('strip outta html comment tag', function () {
 				var code
 				code = '<!-- foobar -->'
@@ -121,8 +175,8 @@ describe('Template', function () {
 		}
 
 		before(function () {
-			_cacheTemplate = _.template.__cacheTemplate
-			_cacheCompiledTemplate = _.template.__cacheCompiledTemplate
+			_cacheTemplate = template.__cacheTemplate
+			_cacheCompiledTemplate = template.__cacheCompiledTemplate
 		})
 		beforeEach(function () {
 			clearCodeCache()
@@ -133,57 +187,57 @@ describe('Template', function () {
 			clearCompileCache()
 		})
 
-		describe('_.template.add()', function () {
+		describe('template.add()', function () {
 			it('add template code to template cache', function () {
-				expect(_cacheTemplate).to.be.deep.equal({})
-				expect(_cacheCompiledTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
 				data = {}
 
-				_.template.add(TEMPLATE_ID_1, templateCode1)
-				_.template.add(TEMPLATE_ID_2, templateCode2)
+				template.add(TEMPLATE_ID_1, templateCode1)
+				template.add(TEMPLATE_ID_2, templateCode2)
 
 				data[TEMPLATE_ID_1] = templateCode1
 				data[TEMPLATE_ID_2] = templateCode2
-				expect(_cacheTemplate).to.be.deep.equal(data)
-				expect(_cacheCompiledTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal(data)
+				expect(_cacheCompiledTemplate).to.deep.equal({})
 			})
 			it('overwrite if add existed template id', function () {
-				expect(_cacheTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal({})
 				data = {}
 
-				_.template.add(TEMPLATE_ID_1, templateCode1)
+				template.add(TEMPLATE_ID_1, templateCode1)
 				data[TEMPLATE_ID_1] = templateCode1
-				expect(_cacheTemplate).to.be.deep.equal(data)
+				expect(_cacheTemplate).to.deep.equal(data)
 
-				_.template.add(TEMPLATE_ID_2, templateCode2)
+				template.add(TEMPLATE_ID_2, templateCode2)
 				data[TEMPLATE_ID_2] = templateCode2
-				expect(_cacheTemplate).to.be.deep.equal(data)
+				expect(_cacheTemplate).to.deep.equal(data)
 			})
 			it('do nothing if missing template code as second param', function () {
-				expect(_cacheTemplate).to.be.deep.equal({})
-				_.template.add('foo')
-				expect(_cacheTemplate).to.be.deep.equal({})
-				_.template.add(1)
-				expect(_cacheTemplate).to.be.deep.equal({})
-				_.template.add(new Date())
-				expect(_cacheTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal({})
+				template.add('foo')
+				expect(_cacheTemplate).to.deep.equal({})
+				template.add(1)
+				expect(_cacheTemplate).to.deep.equal({})
+				template.add(new Date())
+				expect(_cacheTemplate).to.deep.equal({})
 			})
 		})
 
-		describe('_.template.render()', function () {
+		describe('template.render()', function () {
 			it('get template from dom, render, and save to cache', function () {
-				expect(_cacheTemplate).to.be.deep.equal({})
-				expect(_cacheCompiledTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
 				prepareDummyScript()
 
 				//render template
-				html1 = _.template.render(TEMPLATE_ID_1, templateData1)
-				expect(html1).to.be.equal(result1)
-				html2 = _.template.render(TEMPLATE_ID_2, templateData2)
+				html1 = template.render(TEMPLATE_ID_1, templateData1)
+				expect(html1).to.equal(result1)
+				html2 = template.render(TEMPLATE_ID_2, templateData2)
 				//todo: need `_.str.clean()`
 				html2 = html2.replace(/\s+/g, ' ')
 				result2 = result2.replace(/\s+/g, ' ')
-				expect(html2).to.be.equal(result2)
+				expect(html2).to.equal(result2)
 
 				//check if template code saved to cache
 				data = {}
@@ -200,42 +254,42 @@ describe('Template', function () {
 				destroyDummyScript()
 			})
 			it('get template from code cache, render, and save to cache', function () {
-				expect(_cacheTemplate).to.be.deep.equal({})
-				expect(_cacheCompiledTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
 
 				//add to code cache
 				//notice: there's no template in dom
-				_.template.add(TEMPLATE_ID_1, templateCode1)
-				_.template.add(TEMPLATE_ID_2, templateCode2)
+				template.add(TEMPLATE_ID_1, templateCode1)
+				template.add(TEMPLATE_ID_2, templateCode2)
 
 				//render template
-				html1 = _.template.render(TEMPLATE_ID_1, templateData1)
-				expect(html1).to.be.equal(result1)
-				html2 = _.template.render(TEMPLATE_ID_2, templateData2)
+				html1 = template.render(TEMPLATE_ID_1, templateData1)
+				expect(html1).to.equal(result1)
+				html2 = template.render(TEMPLATE_ID_2, templateData2)
 				html2 = html2.replace(/\s+/g, ' ')
 				result2 = result2.replace(/\s+/g, ' ')
-				expect(html2).to.be.equal(result2)
+				expect(html2).to.equal(result2)
 
 				//check if compiled template fn saved to cache
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.be.a('function')
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_2]).to.be.a('function')
 			})
 			it('get template from compiled cache, render', function () {
-				expect(_cacheTemplate).to.be.deep.equal({})
-				expect(_cacheCompiledTemplate).to.be.deep.equal({})
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
 
 				//add to code cache
 				//notice: there's no template in dom
-				_.template.add(TEMPLATE_ID_1, templateCode1)
-				_.template.add(TEMPLATE_ID_2, templateCode2)
+				template.add(TEMPLATE_ID_1, templateCode1)
+				template.add(TEMPLATE_ID_2, templateCode2)
 
 				//render template
-				html1 = _.template.render(TEMPLATE_ID_1, templateData1)
-				expect(html1).to.be.equal(result1)
-				html2 = _.template.render(TEMPLATE_ID_2, templateData2)
+				html1 = template.render(TEMPLATE_ID_1, templateData1)
+				expect(html1).to.equal(result1)
+				html2 = template.render(TEMPLATE_ID_2, templateData2)
 				html2 = html2.replace(/\s+/g, ' ')
 				result2 = result2.replace(/\s+/g, ' ')
-				expect(html2).to.be.equal(result2)
+				expect(html2).to.equal(result2)
 
 				//clear code cache
 				//notice: there's no template in dom
@@ -243,14 +297,14 @@ describe('Template', function () {
 				clearCodeCache()
 
 				//render template
-				html1 = _.template.render(TEMPLATE_ID_1, templateData1)
-				expect(html1).to.be.equal(result1)
-				html2 = _.template.render(TEMPLATE_ID_2, templateData2)
+				html1 = template.render(TEMPLATE_ID_1, templateData1)
+				expect(html1).to.equal(result1)
+				html2 = template.render(TEMPLATE_ID_2, templateData2)
 				html2 = html2.replace(/\s+/g, ' ')
 				result2 = result2.replace(/\s+/g, ' ')
-				expect(html2).to.be.equal(result2)
+				expect(html2).to.equal(result2)
 			})
 		})
-
 	})
-})
+
+}()
