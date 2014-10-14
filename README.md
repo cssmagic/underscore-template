@@ -1,6 +1,6 @@
 # Underscore.template
 
-More APIs for Underscore's template engine - template fetching, caching and rendering.
+More APIs for Underscore's template engine - template fetching, rendering and caching.
 
 ## Install
 

@@ -1,5 +1,5 @@
 /**
- * Underscore.template - More APIs for Underscore's template engine - template fetching, caching and rendering.
+ * Underscore.template - More APIs for Underscore's template engine - template fetching, rendering and caching.
  * Released under the MIT license.
  * https://github.com/cssmagic/underscore.template
  */
