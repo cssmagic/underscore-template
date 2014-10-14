@@ -1,12 +1,12 @@
 {
-  "name": "underscore.template",
-  "version": "0.1.0",
-  "homepage": "https://github.com/cssmagic/underscore.template",
+  "name": "underscore-template",
+  "version": "0.1.1",
+  "homepage": "https://github.com/cssmagic/underscore-template",
   "authors": [
     "cssmagic"
   ],
   "description": "More APIs for Underscore's template engine.",
-  "main": "src/action.js",
+  "main": "src/underscore-template.js",
   "moduleType": [
     "globals"
   ],
