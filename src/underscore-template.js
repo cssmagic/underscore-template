@@ -1,7 +1,7 @@
 /**
- * Underscore.template - More APIs for Underscore's template engine - template fetching, rendering and caching.
+ * Underscore-template - More APIs for Underscore's template engine - template fetching, rendering and caching.
  * Released under the MIT license.
- * https://github.com/cssmagic/underscore.template
+ * https://github.com/cssmagic/underscore-template
  */
 var template = function () {
 	'use strict'
