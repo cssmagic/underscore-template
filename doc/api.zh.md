@@ -10,7 +10,7 @@
 
 Underscore 内置了一个小巧而完备的前端模板引擎（`_.template()`），而 Underscore-template 这个库则将它更好地融入了开发流程。
 
-因此，在使用这个库之前，你需要了解 Underscore 的模板引擎。推荐学习资源如下：
+因此，在使用这个库之前，你需要了解 Underscore 的模板引擎。推荐资源如下：
 
 * [Underscore 模板引擎 API 官方文档](http://underscorejs.org/#template)
 * [中文注解](https://github.com/cssmagic/blog/issues/4)
@@ -44,7 +44,7 @@ Underscore 内置了一个小巧而完备的前端模板引擎（`_.template()`�
 template.add('my-list', [
 	'<ul class="my-list">',
 	'<% _.each(data.list, function (item) { %>',
-		'<li>item<li>',
+		'<li><%= item %><li>',
 	'<% }) %>',
 	'</ul>'
 ].join('\n'))
@@ -105,7 +105,7 @@ var html = template.render('my-list', todoList)
 <script type="text/template">
 <ul class="my-list">
 <% _.each(data.list, function (item) { %>
-	<li>item<li>
+	<li><%= item %><li>
 <% }) %>
 </ul>
 </script>
