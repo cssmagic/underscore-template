@@ -46,9 +46,8 @@
 
 ## API 文档
 
-Underscore-template 提供了简洁易用的 API，[详见此文档](https://github.com/cssmagic/underscore-template/issues/5)。
-
-此外，建议阅读 [Wiki](https://github.com/cssmagic/underscore-template/wiki) 来获取更多信息。
+* Underscore-template 提供了简洁易用的 API，[详见此文档](https://github.com/cssmagic/underscore-template/issues/5)。
+* 此外，建议阅读 [Wiki](https://github.com/cssmagic/underscore-template/wiki) 来获取更多信息。
 
 ## 单元测试
 
