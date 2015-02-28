@@ -49,17 +49,17 @@ void function () {
 		})
 
 		describe('_toTemplateId()', function () {
-			it('return directly if initial character is not space, `#` or `!`', function () {
+			it('returns directly if initial character is not space, `#` or `!`', function () {
 				var arg
 				arg = 'foobar'
 				expect(_toTemplateId(arg)).to.equal(arg)
 			})
-			it('remove `' + PREFIX + '` prefix', function () {
+			it('removes `' + PREFIX + '` prefix', function () {
 				var arg
 				arg = PREFIX + 'foo'
 				expect(_toTemplateId(arg)).to.equal('foo')
 			})
-			it('remove all initial `#` and `!` characters', function () {
+			it('removes all initial `#` and `!` characters', function () {
 				var arg
 				arg = '###foo#bar'
 				expect(_toTemplateId(arg)).to.equal('foo#bar')
@@ -70,7 +70,7 @@ void function () {
 				arg = '#!!' + PREFIX + 'foo!bar'
 				expect(_toTemplateId(arg)).to.equal('foo!bar')
 			})
-			it('ignore initial and ending spaces', function () {
+			it('ignores initial and ending spaces', function () {
 				var arg
 				arg = '    '
 				expect(_toTemplateId(arg)).to.equal('')
@@ -85,7 +85,7 @@ void function () {
 				arg = '  #!  ' + PREFIX + 'bar  '
 				expect(_toTemplateId(arg)).to.equal('bar')
 			})
-			it('convert falsy value to empty string', function () {
+			it('converts falsy value to empty string', function () {
 				var arg
 				arg = undefined
 				expect(_toTemplateId(arg)).to.equal('')
@@ -98,19 +98,19 @@ void function () {
 			})
 		})
 		describe('_toElementId()', function () {
-			it('add `' + PREFIX + '` prefix', function () {
+			it('adds `' + PREFIX + '` prefix', function () {
 				var arg
 				arg = 'foo'
 				expect(_toElementId(arg)).to.equal(PREFIX + 'foo')
 			})
-			it('ignore initial and ending spaces', function () {
+			it('ignores initial and ending spaces', function () {
 				var arg
 				arg = '    '
 				expect(_toElementId(arg)).to.equal(PREFIX)
 				arg = '  foo  '
 				expect(_toElementId(arg)).to.equal(PREFIX + 'foo')
 			})
-			it('convert falsy value to `' + PREFIX + '`', function () {
+			it('converts falsy value to `' + PREFIX + '`', function () {
 				var arg
 				arg = undefined
 				expect(_toElementId(arg)).to.equal(PREFIX)
@@ -123,7 +123,7 @@ void function () {
 			})
 		})
 		describe('_isTemplateCode()', function () {
-			it('do basic functionality', function () {
+			it('does basic functionality', function () {
 				expect(_isTemplateCode(templateCode1)).to.be.true
 				expect(_isTemplateCode(templateCode2)).to.be.true
 
@@ -144,14 +144,14 @@ void function () {
 			})
 		})
 		describe('_stripCommentTag()', function () {
-			it('strip outta html comment tag', function () {
+			it('strips outta html comment tag', function () {
 				var code
 				code = '<!-- foobar -->'
 				expect(_stripCommentTag(code)).to.equal('foobar')
 				code = '<!-- <p>foobar</p> -->'
 				expect(_stripCommentTag(code)).to.equal('<p>foobar</p>')
 			})
-			it('return if not wrapped by comment tag', function () {
+			it('returns if not wrapped by comment tag', function () {
 				var code
 				code = undefined
 				expect(_stripCommentTag(code)).to.equal(String(code))
@@ -219,7 +219,7 @@ void function () {
 		})
 
 		describe('template.add()', function () {
-			it('add template code to template cache', function () {
+			it('adds template code to template cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 				data = {}
@@ -232,7 +232,7 @@ void function () {
 				expect(_cacheTemplate).to.deep.equal(data)
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 			})
-			it('overwrite if add existed template id', function () {
+			it('overwrites while adding existed template id', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				data = {}
 
@@ -244,7 +244,7 @@ void function () {
 				data[TEMPLATE_ID_2] = templateCode2
 				expect(_cacheTemplate).to.deep.equal(data)
 			})
-			it('do nothing if missing template code as second param', function () {
+			it('does nothing if missing template code as second param', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				template.add('foo')
 				expect(_cacheTemplate).to.deep.equal({})
@@ -256,7 +256,7 @@ void function () {
 		})
 
 		describe('template.render()', function () {
-			it('get template from dom, render, and save to cache', function () {
+			it('gets template from dom, renders, and saves to cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 				prepareDummyScript()
@@ -283,7 +283,7 @@ void function () {
 
 				destroyDummyScript()
 			})
-			it('get template from code cache, render, and save to compiled cache', function () {
+			it('gets template from code cache, renders, and saves to compiled cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 
@@ -304,7 +304,7 @@ void function () {
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.be.a('function')
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_2]).to.be.a('function')
 			})
-			it('get template from compiled cache, render', function () {
+			it('gets template from compiled cache, renders', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 
