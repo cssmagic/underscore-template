@@ -18,17 +18,21 @@ var template = function () {
 
 	//string function
 	function trim(str){
-		return str.replace(/ /g,'');
+		while(str[0] == ' ' || str[str.length-1] == ' '){
+			str = str.replace(/^[\s]/g,'');
+			str = str.replace(/[\s]$/g,'');
+		}
+		return str;
 	}
 
 	function include(str, key){
-		return str.search(key)+1;
+		return (str.search(key)+1 == 0)?false:true;
 	}
 
 	function startsWith(str, key){
 		return (str.substr(0,key.length) == key);
 	}
-	
+
 	function endsWith(str, key){
 		return (str.substr(str.length-key.length, key.length) == key);
 	}
