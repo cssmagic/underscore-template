@@ -30,7 +30,7 @@
 	$ bower install underscore-template
 	```
 
-0. 在页面中加载 Underscore-template 的脚本文件及必要的依赖：
+0. 在页面中加载 Underscore-template 的脚本文件及必要的依赖(已去除对underscore.string的依赖 By Dante)：
 	```html
 	<!DOCTYPE html>
 	<html>

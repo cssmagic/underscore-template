@@ -18,16 +18,16 @@ var template = function () {
 
 	//string function
 	function trim(str){
-		return str.replace(/ /g,'');
+		return str.replace(/(^\s*)|(\s*$)/g, "");
 	}
 	function include(str, key){
-		return str.search(key)+1;
+		return (str.search(key) + 1 == 0) ? false : true
 	}
 	function startsWith(str, key){
-		return (str.substr(0,key.length) == key);
+		return (str.substr(0, key.length) == key)
 	}
 	function endsWith(str, key){
-		return (str.substr(str.length-key.length, key.length) == key);
+		return (str.substr(str.length - key.length, key.length) == key)
 	}
 
 	//util
@@ -35,20 +35,20 @@ var template = function () {
 		//`#template-my-tpl-001` -> `my-tpl-001`
 		// `template-my-tpl-001` -> `my-tpl-001`
 		//          `my-tpl-001` -> `my-tpl-001`
-		id = id ? trim(id).replace(/^[#!]+/, '') : ''
-		return trim(id).replace(ELEM_ID_PREFIX, '')
+		id = id ? _.str.trim(id).replace(/^[#!]+/, '') : ''
+		return _.str.trim(id).replace(ELEM_ID_PREFIX, '')
 	}
 	function _toElementId(id) {
 		//`template-my-tpl-001` -> `template-my-tpl-001`
 		//         `my-tpl-001` -> `template-my-tpl-001`
-		id = id ? trim(id) : ''
-		return startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
+		id = id ? _.str.trim(id) : ''
+		return _.str.startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
 	function _stripCommentTag(str) {
 		str = String(str)
-		if (startsWith(str, '<!' + '--') && endsWith(str, '-->')) {
+		if (_.str.startsWith(str, '<!' + '--') && _.str.endsWith(str, '-->')) {
 			str = str.replace(/^<!\-\-/, '').replace(/\-\->$/, '')
-			str = trim(str)
+			str = _.str.trim(str)
 		}
 		return str
 	}
@@ -59,7 +59,7 @@ var template = function () {
 		var elementId = _toElementId(String(id))
 		var elem = document.getElementById(elementId)
 		if (elem) {
-			var str = trim(elem.innerHTML)
+			var str = _.str.trim(elem.innerHTML)
 			if (str) {
 				//strip html comment tag wrapping template code
 				//especially for jedi 1.0 (https://github.com/baixing/jedi)
@@ -86,7 +86,7 @@ var template = function () {
 	}
 	function _isTemplateCode(s) {
 		var code = String(s)
-		return include(code, '<%') && include(code, '%>') && /\bdata\b/.test(code)
+		return _.str.include(code, '<%') && _.str.include(code, '%>') && /\bdata\b/.test(code)
 	}
 
 	//fn
