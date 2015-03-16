@@ -18,10 +18,6 @@ var template = function () {
 
 	//string function
 	function trim(str){
-		// while(str[0] == ' ' || str[str.length-1] == ' '){
-		// 	str = str.replace(/^[\s]/g,'');
-		// 	str = str.replace(/[\s]$/g,'');
-		// }
 		return str.replace(/(^\s*)|(\s*$)/g, "");
 	}
 
