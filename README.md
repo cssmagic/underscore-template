@@ -30,7 +30,7 @@
 	$ bower install underscore-template
 	```
 
-0. 在页面中加载 Underscore-template 的脚本文件及必要的依赖(已去除对underscore.string的依赖 By Dante)：
+0. 在页面中加载 Underscore-template 的脚本文件及必要的依赖：
 	```html
 	<!DOCTYPE html>
 	<html>
@@ -38,7 +38,6 @@
 	<body>
 		...
 		<script src="bower_components/underscore/underscore.js">
-		<script src="bower_components/underscore.string/dist/underscore.string.min.js">
 		<script src="bower_components/underscore-template/src/underscore-template.js">
 	</body>
 	</html>
