@@ -20,12 +20,15 @@ var template = function () {
 	function trim(str){
 		return str.replace(/ /g,'');
 	}
+
 	function include(str, key){
 		return str.search(key)+1;
 	}
+
 	function startsWith(str, key){
 		return (str.substr(0,key.length) == key);
 	}
+	
 	function endsWith(str, key){
 		return (str.substr(str.length-key.length, key.length) == key);
 	}
