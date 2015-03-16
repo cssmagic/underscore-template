@@ -35,20 +35,20 @@ var template = function () {
 		//`#template-my-tpl-001` -> `my-tpl-001`
 		// `template-my-tpl-001` -> `my-tpl-001`
 		//          `my-tpl-001` -> `my-tpl-001`
-		id = id ? _.str.trim(id).replace(/^[#!]+/, '') : ''
-		return _.str.trim(id).replace(ELEM_ID_PREFIX, '')
+		id = id ? trim(id).replace(/^[#!]+/, '') : ''
+		return trim(id).replace(ELEM_ID_PREFIX, '')
 	}
 	function _toElementId(id) {
 		//`template-my-tpl-001` -> `template-my-tpl-001`
 		//         `my-tpl-001` -> `template-my-tpl-001`
-		id = id ? _.str.trim(id) : ''
-		return _.str.startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
+		id = id ? trim(id) : ''
+		return startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
 	function _stripCommentTag(str) {
 		str = String(str)
-		if (_.str.startsWith(str, '<!' + '--') && _.str.endsWith(str, '-->')) {
+		if (startsWith(str, '<!' + '--') && endsWith(str, '-->')) {
 			str = str.replace(/^<!\-\-/, '').replace(/\-\->$/, '')
-			str = _.str.trim(str)
+			str = trim(str)
 		}
 		return str
 	}
@@ -59,7 +59,7 @@ var template = function () {
 		var elementId = _toElementId(String(id))
 		var elem = document.getElementById(elementId)
 		if (elem) {
-			var str = _.str.trim(elem.innerHTML)
+			var str = trim(elem.innerHTML)
 			if (str) {
 				//strip html comment tag wrapping template code
 				//especially for jedi 1.0 (https://github.com/baixing/jedi)
@@ -86,7 +86,7 @@ var template = function () {
 	}
 	function _isTemplateCode(s) {
 		var code = String(s)
-		return _.str.include(code, '<%') && _.str.include(code, '%>') && /\bdata\b/.test(code)
+		return include(code, '<%') && include(code, '%>') && /\bdata\b/.test(code)
 	}
 
 	//fn
