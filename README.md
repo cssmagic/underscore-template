@@ -16,7 +16,6 @@
 依赖以下类库：
 
 * Underscore
-* Underscore.string
 
 支持以下浏览器：
 
@@ -38,7 +37,6 @@
 	<body>
 		...
 		<script src="bower_components/underscore/underscore.js">
-		<script src="bower_components/underscore.string/dist/underscore.string.min.js">
 		<script src="bower_components/underscore-template/src/underscore-template.js">
 	</body>
 	</html>
