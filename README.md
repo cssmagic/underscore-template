@@ -16,7 +16,6 @@
 依赖以下类库：
 
 * Underscore
-* Underscore.string
 
 支持以下浏览器：
 
