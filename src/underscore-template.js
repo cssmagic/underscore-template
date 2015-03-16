@@ -17,17 +17,17 @@ var template = function () {
 	var _cacheCompiledTemplate = {}
 
 	//string function
-	function trim(str){
-		return str.replace(/(^\s*)|(\s*$)/g, "");
+	function trim(str) {
+		return str.replace(/^\s*|\s*$/g, '')
 	}
-	function include(str, key){
-		return (str.search(key) + 1 == 0) ? false : true
+	function include(str, key) {
+		return str.indexOf(key) > -1
 	}
-	function startsWith(str, key){
-		return (str.substr(0, key.length) == key)
+	function startsWith(str, key) {
+		return str.substr(0, key.length) === key
 	}
-	function endsWith(str, key){
-		return (str.substr(str.length - key.length, key.length) == key)
+	function endsWith(str, key) {
+		return str.substr(str.length - key.length, key.length) === key
 	}
 
 	//util
