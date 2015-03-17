@@ -20,14 +20,14 @@ var template = function () {
 	function _trim(str) {
 		return str.replace(/^\s*|\s*$/g, '')
 	}
-	function _include(str, key) {
-		return str.indexOf(key) > -1
+	function _include(str, substring) {
+		return str.length > substring.length ? str.indexOf(substring) > -1 : false
 	}
-	function _startsWith(str, key) {
-		return str.indexOf(key) === 0
+	function _startsWith(str, starts) {
+		return str.length > starts.length ? str.indexOf(starts) === 0 : false
 	}
-	function _endsWith(str, key) {
-		return str.indexOf(key) === (str.length - key.length)
+	function _endsWith(str, ends) {
+		return str.length > ends.length ? str.indexOf(ends) === (str.length - ends.length) : false
 	}
 
 	//util
