@@ -177,6 +177,11 @@ void function () {
 		var data, html1, html2
 		var _cacheTemplate, _cacheCompiledTemplate
 
+		//string
+		function clean(str) {
+			return str.replace(/^\s*|\s*$/g, '').replace(/\s+/g, ' ')
+		}
+
 		//util
 		function clearCodeCache() {
 			delete _cacheTemplate[TEMPLATE_ID_1]
@@ -265,8 +270,8 @@ void function () {
 				html1 = template.render(TEMPLATE_ID_1, templateData1)
 				expect(html1).to.equal(result1)
 				html2 = template.render(TEMPLATE_ID_2, templateData2)
-				html2 = _.str.clean(html2)
-				result2 = _.str.clean(result2)
+				html2 = clean(html2)
+				result2 = clean(result2)
 				expect(html2).to.equal(result2)
 
 				//check if template code saved to cache
