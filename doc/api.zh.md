@@ -44,7 +44,7 @@ Underscore 内置了一个小巧而完备的前端模板引擎（`_.template()`�
 template.add('my-list', [
 	'<ul class="my-list">',
 	'<% _.each(data.list, function (item) { %>',
-		'<li><%= item %><li>',
+		'<li><%= item %></li>',
 	'<% }) %>',
 	'</ul>'
 ].join('\n'))
@@ -89,9 +89,9 @@ var html = template.render('my-list', todoList)
 
 ```html
 <ul class="my-list">
-	<li>买一台新手机<li>
-	<li>吃一顿大餐<li>
-	<li>来一次说走就走的旅行<li>
+	<li>买一台新手机</li>
+	<li>吃一顿大餐</li>
+	<li>来一次说走就走的旅行</li>
 </ul>
 ```
 
@@ -105,7 +105,7 @@ var html = template.render('my-list', todoList)
 <script type="text/template">
 <ul class="my-list">
 <% _.each(data.list, function (item) { %>
-	<li><%= item %><li>
+	<li><%= item %></li>
 <% }) %>
 </ul>
 </script>
