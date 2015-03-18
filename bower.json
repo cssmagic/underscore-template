@@ -26,7 +26,6 @@
     "demo"
   ],
   "dependencies": {
-    "underscore.string": "2.*",
     "underscore": "1.*"
   },
   "devDependencies": {

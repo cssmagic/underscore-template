@@ -17,17 +17,17 @@ var template = function () {
 	var _cacheCompiledTemplate = {}
 
 	//string function
-	function trim(str) {
-		return str.replace(/^\s*|\s*$/g, '')
+	function _trim(str) {
+		return str.replace(/^\s+|\s+$/g, '')
 	}
-	function include(str, key) {
-		return str.indexOf(key) > -1
+	function _include(str, substring) {
+		return str.length > substring.length ? str.indexOf(substring) > -1 : false
 	}
-	function startsWith(str, key) {
-		return str.substr(0, key.length) === key
+	function _startsWith(str, starts) {
+		return str.length > starts.length ? str.indexOf(starts) === 0 : false
 	}
-	function endsWith(str, key) {
-		return str.substr(str.length - key.length, key.length) === key
+	function _endsWith(str, ends) {
+		return str.length > ends.length ? str.indexOf(ends) === (str.length - ends.length) : false
 	}
 
 	//util
@@ -35,20 +35,20 @@ var template = function () {
 		//`#template-my-tpl-001` -> `my-tpl-001`
 		// `template-my-tpl-001` -> `my-tpl-001`
 		//          `my-tpl-001` -> `my-tpl-001`
-		id = id ? trim(id).replace(/^[#!]+/, '') : ''
-		return trim(id).replace(ELEM_ID_PREFIX, '')
+		id = _.isString(id) && id ? _trim(id).replace(/^[#!]+/, '') : ''
+		return _trim(id).replace(ELEM_ID_PREFIX, '')
 	}
 	function _toElementId(id) {
 		//`template-my-tpl-001` -> `template-my-tpl-001`
 		//         `my-tpl-001` -> `template-my-tpl-001`
-		id = id ? trim(id) : ''
-		return startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
+		id = id ? _trim(id) : ''
+		return _startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
 	function _stripCommentTag(str) {
 		str = String(str)
-		if (startsWith(str, '<!' + '--') && endsWith(str, '-->')) {
+		if (_startsWith(str, '<!' + '--') && _endsWith(str, '-->')) {
 			str = str.replace(/^<!\-\-/, '').replace(/\-\->$/, '')
-			str = trim(str)
+			str = _trim(str)
 		}
 		return str
 	}
@@ -59,7 +59,7 @@ var template = function () {
 		var elementId = _toElementId(String(id))
 		var elem = document.getElementById(elementId)
 		if (elem) {
-			var str = trim(elem.innerHTML)
+			var str = _trim(elem.innerHTML)
 			if (str) {
 				//strip html comment tag wrapping template code
 				//especially for jedi 1.0 (https://github.com/baixing/jedi)
@@ -86,7 +86,7 @@ var template = function () {
 	}
 	function _isTemplateCode(s) {
 		var code = String(s)
-		return include(code, '<%') && include(code, '%>') && /\bdata\b/.test(code)
+		return _include(code, '<%') && _include(code, '%>') && /\bdata\b/.test(code)
 	}
 
 	//fn
