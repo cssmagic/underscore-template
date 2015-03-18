@@ -18,7 +18,7 @@ var template = function () {
 
 	//string function
 	function _trim(str) {
-		return str.replace(/^\s*|\s*$/g, '')
+		return str.replace(/^\s+|\s+$/g, '')
 	}
 	function _include(str, substring) {
 		return str.length > substring.length ? str.indexOf(substring) > -1 : false
