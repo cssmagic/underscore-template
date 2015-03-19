@@ -4,7 +4,7 @@ void function () {
 
 	//const
 	var TEST_STR = 'This is test string'
-	var LONGER_STR = 'This substring is more longer'
+	var LONGER_STR = 'This substring is longer than another'
 	var TEMPLATE_ID_1 = 'paragraph'
 	var TEMPLATE_ID_2 = 'person'
 	var HELLO = 'Hello world!'
@@ -59,7 +59,7 @@ void function () {
 		})
 
 		describe('_trim()', function () {
-			it('removes all `space` from the beginning and end of the supplied string', function () {
+			it('removes all spaces from the beginning and end of the supplied string', function () {
 				var arg
 				arg = '  foo bar  '
 				expect(_trim(arg)).to.equal('foo bar')
@@ -74,37 +74,49 @@ void function () {
 			})
 		})
 		describe('_include()', function () {
-			it('return false when the length of subtring is shorter than supplied string', function () {
+			it('returns false when the length of substring is shorter than supplied string', function () {
 				expect(_include(TEST_STR, LONGER_STR)).to.be.false
 			})
-			it('returns whether subtring is found within the supplied string', function () {
+			it('returns whether substring is found within the supplied string', function () {
 				var arg
 				arg = 'test'
 				expect(_include(TEST_STR, arg)).to.be.true
+				arg = 'st st'
+				expect(_include(TEST_STR, arg)).to.be.true
+				arg = 'test String'
+				expect(_include(TEST_STR, arg)).to.be.false
 				arg = 'foobar'
 				expect(_include(TEST_STR, arg)).to.be.false
 			})
 		})
 		describe('_startsWith()', function () {
-			it('return false when the length of subtring is shorter than supplied string', function () {
+			it('returns false when the length of substring is shorter than supplied string', function () {
 				expect(_startsWith(TEST_STR, LONGER_STR)).to.be.false
 			})
 			it('returns whether a string begins with the characters of another string', function () {
 				var arg
 				arg = 'This'
 				expect(_startsWith(TEST_STR, arg)).to.be.true
+				arg = 'this'
+				expect(_startsWith(TEST_STR, arg)).to.be.false
+				arg = 'This i'
+				expect(_startsWith(TEST_STR, arg)).to.be.true
 				arg = 'foobar'
 				expect(_startsWith(TEST_STR, arg)).to.be.false
 			})
 		})
 		describe('_endsWith()', function () {
-			it('return false when the length of subtring is shorter than supplied string', function () {
+			it('returns false when the length of substring is shorter than supplied string', function () {
 				expect(_endsWith(TEST_STR, LONGER_STR)).to.be.false
 			})
 			it('returns whether a string begins with the characters of another string', function () {
 				var arg
 				arg = 'string'
 				expect(_endsWith(TEST_STR, arg)).to.be.true
+				arg = 't string'
+				expect(_endsWith(TEST_STR, arg)).to.be.true
+				arg = 'est String'
+				expect(_endsWith(TEST_STR, arg)).to.false
 				arg = 'foobar'
 				expect(_endsWith(TEST_STR, arg)).to.be.false
 			})
