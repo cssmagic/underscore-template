@@ -3,6 +3,8 @@ void function () {
 	_.templateSettings.variable = 'data'
 
 	//const
+	var TEST_STR = 'This is test string'
+	var LONGER_STR = 'This substring is longer than another'
 	var TEMPLATE_ID_1 = 'paragraph'
 	var TEMPLATE_ID_2 = 'person'
 	var HELLO = 'Hello world!'
@@ -36,18 +38,89 @@ void function () {
 	].join('\n')
 
 	describe('Util', function () {
+		var _trim
+		var _include
+		var _startsWith
+		var _endsWith
 		var _toTemplateId
 		var _toElementId
 		var _isTemplateCode
 		var _stripCommentTag
 
 		before(function () {
+			_trim = template.__trim
+			_include = template.__include
+			_startsWith = template.__startsWith
+			_endsWith = template.__endsWith
 			_toTemplateId = template.__toTemplateId
 			_toElementId = template.__toElementId
 			_isTemplateCode = template.__isTemplateCode
 			_stripCommentTag = template.__stripCommentTag
 		})
 
+		describe('_trim()', function () {
+			it('removes all spaces from the beginning and end of the supplied string', function () {
+				var arg
+				arg = '  foo bar  '
+				expect(_trim(arg)).to.equal('foo bar')
+				arg = '  foo bar'
+				expect(_trim(arg)).to.equal('foo bar')
+				arg = 'foo bar  '
+				expect(_trim(arg)).to.equal('foo bar')
+				arg = 'foo   bar'
+				expect(_trim(arg)).to.equal('foo   bar')
+				arg = ''
+				expect(_trim(arg)).to.equal('')
+			})
+		})
+		describe('_include()', function () {
+			it('returns false when the length of substring is shorter than supplied string', function () {
+				expect(_include(TEST_STR, LONGER_STR)).to.be.false
+			})
+			it('returns whether substring is found within the supplied string', function () {
+				var arg
+				arg = 'test'
+				expect(_include(TEST_STR, arg)).to.be.true
+				arg = 'st st'
+				expect(_include(TEST_STR, arg)).to.be.true
+				arg = 'test String'
+				expect(_include(TEST_STR, arg)).to.be.false
+				arg = 'foobar'
+				expect(_include(TEST_STR, arg)).to.be.false
+			})
+		})
+		describe('_startsWith()', function () {
+			it('returns false when the length of substring is shorter than supplied string', function () {
+				expect(_startsWith(TEST_STR, LONGER_STR)).to.be.false
+			})
+			it('returns whether a string begins with the characters of another string', function () {
+				var arg
+				arg = 'This'
+				expect(_startsWith(TEST_STR, arg)).to.be.true
+				arg = 'this'
+				expect(_startsWith(TEST_STR, arg)).to.be.false
+				arg = 'This i'
+				expect(_startsWith(TEST_STR, arg)).to.be.true
+				arg = 'foobar'
+				expect(_startsWith(TEST_STR, arg)).to.be.false
+			})
+		})
+		describe('_endsWith()', function () {
+			it('returns false when the length of substring is shorter than supplied string', function () {
+				expect(_endsWith(TEST_STR, LONGER_STR)).to.be.false
+			})
+			it('returns whether a string begins with the characters of another string', function () {
+				var arg
+				arg = 'string'
+				expect(_endsWith(TEST_STR, arg)).to.be.true
+				arg = 't string'
+				expect(_endsWith(TEST_STR, arg)).to.be.true
+				arg = 'est String'
+				expect(_endsWith(TEST_STR, arg)).to.false
+				arg = 'foobar'
+				expect(_endsWith(TEST_STR, arg)).to.be.false
+			})
+		})
 		describe('_toTemplateId()', function () {
 			it('returns directly if initial character is not space, `#` or `!`', function () {
 				var arg
