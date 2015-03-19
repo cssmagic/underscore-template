@@ -111,9 +111,19 @@ var template = function () {
 	}
 
 	//api
-	template.remove = function (/* id */) {
+	template.remove = function (id) {
 		//todo: remove template from cache (both str and fn)
 		//todo: remove dummy script element
+		if (!id) return false
+
+		var templateId = _toTemplateId(id)
+		if (!_cacheTemplate[templateId]) {
+			console.warn('[Template] Template id "' + templateId + '" can not be found.')
+			return false
+		}
+		
+		delete _cacheTemplate[templateId]
+		delete _cacheCompiledTemplate[templateId]
 	}
 	template.add = add
 	template.render = function (id, data) {
@@ -129,7 +139,7 @@ var template = function () {
 		//search in _cacheCompiledTemplate
 		var fn = _cacheCompiledTemplate[templateId]
 		var templateCode = _cacheTemplate[templateId]
-		if (_.isFunction(fn)) {
+        if (_.isFunction(fn)) {
 			result = fn(data)
 		}
 		//search in _cacheTemplate
