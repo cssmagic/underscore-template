@@ -351,7 +351,6 @@ void function () {
 			it('removes template from cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
-				prepareDummyScript()
 
 				//remove a template which is not compiled
 				template.add(TEMPLATE_ID_1, templateCode1)
@@ -361,7 +360,7 @@ void function () {
 
 				//remove a template which has been compiled
 				template.add(TEMPLATE_ID_2, templateCode2)
-				template.render(TEMPLATE_ID_2)
+				template.render(TEMPLATE_ID_2, templateData2)
 				template.remove(TEMPLATE_ID_2)
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})				

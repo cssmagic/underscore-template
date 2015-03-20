@@ -112,7 +112,6 @@ var template = function () {
 
 	//api
 	template.remove = function (id) {
-		//todo: remove template from cache (both str and fn)
 		//todo: remove dummy script element
 		if (!id) return false
 
