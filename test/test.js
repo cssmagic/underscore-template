@@ -343,7 +343,7 @@ void function () {
 				arg = ''
 				expect(template.remove(arg)).to.be.false
 			})
-			it('returns false if template id is not found', function (){
+			it('returns false if template id is not found', function () {
 				var arg
 				arg = 'not-existed'
 				expect(template.remove(arg)).to.be.false
@@ -353,12 +353,15 @@ void function () {
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 				prepareDummyScript()
 
+				//remove a template which is not compiled
 				template.add(TEMPLATE_ID_1, templateCode1)
 				template.remove(TEMPLATE_ID_1)
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 
+				//remove a template which has been compiled
 				template.add(TEMPLATE_ID_2, templateCode2)
+				template.render(TEMPLATE_ID_2)
 				template.remove(TEMPLATE_ID_2)
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})				
