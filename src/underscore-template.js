@@ -139,7 +139,7 @@ var template = function () {
 		//search in _cacheCompiledTemplate
 		var fn = _cacheCompiledTemplate[templateId]
 		var templateCode = _cacheTemplate[templateId]
-        if (_.isFunction(fn)) {
+		if (_.isFunction(fn)) {
 			result = fn(data)
 		}
 		//search in _cacheTemplate
