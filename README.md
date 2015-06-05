@@ -25,21 +25,16 @@
 ## 安装
 
 0. 通过 Bower 安装：
+
 	```sh
 	$ bower install underscore-template
 	```
 
 0. 在页面中加载 Underscore-template 的脚本文件及必要的依赖：
+
 	```html
-	<!DOCTYPE html>
-	<html>
-	<head>...</head>
-	<body>
-		...
-		<script src="bower_components/underscore/underscore.js">
-		<script src="bower_components/underscore-template/src/underscore-template.js">
-	</body>
-	</html>
+	<script src="bower_components/underscore/underscore.js"></script>
+	<script src="bower_components/underscore-template/src/underscore-template.js"></script>
 	```
 
 ## API 文档
