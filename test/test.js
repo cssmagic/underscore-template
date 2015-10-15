@@ -169,6 +169,15 @@ void function () {
 				arg = NaN
 				expect(_toTemplateId(arg)).to.equal('')
 			})
+			it('converts invalid type to empty string', function () {
+				var arg
+				arg = 1999
+				expect(_toTemplateId(arg)).to.equal('')
+				arg = {name: 'Peter', age: '20'}
+				expect(_toTemplateId(arg)).to.equal('')
+				arg = [1,2,3]
+				expect(_toTemplateId(arg)).to.equal('')
+			})
 		})
 		describe('_toElementId()', function () {
 			it('adds `' + PREFIX + '` prefix', function () {
@@ -192,6 +201,15 @@ void function () {
 				arg = false
 				expect(_toElementId(arg)).to.equal(PREFIX)
 				arg = NaN
+				expect(_toElementId(arg)).to.equal(PREFIX)
+			})
+			it('converts invalid type to `' + PREFIX + '`', function () {
+				var arg
+				arg = 1999
+				expect(_toElementId(arg)).to.equal(PREFIX)
+				arg = {name: 'Peter', age: '20'}
+				expect(_toElementId(arg)).to.equal(PREFIX)
+				arg = [1,2,3]
 				expect(_toElementId(arg)).to.equal(PREFIX)
 			})
 		})

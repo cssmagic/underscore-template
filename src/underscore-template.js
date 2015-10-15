@@ -35,13 +35,13 @@ var template = function () {
 		//`#template-my-tpl-001` -> `my-tpl-001`
 		// `template-my-tpl-001` -> `my-tpl-001`
 		//          `my-tpl-001` -> `my-tpl-001`
-		id = _.isString(id) && id ? _trim(id).replace(/^[#!]+/, '') : ''
+		id = id && _.isString(id) ? _trim(id).replace(/^[#!]+/, '') : ''
 		return _trim(id).replace(ELEM_ID_PREFIX, '')
 	}
 	function _toElementId(id) {
 		//`template-my-tpl-001` -> `template-my-tpl-001`
 		//         `my-tpl-001` -> `template-my-tpl-001`
-		id = id ? _trim(id) : ''
+		id = id && _.isString(id) ? _trim(id) : ''
 		return _startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
 	function _stripCommentTag(str) {
