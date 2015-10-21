@@ -98,10 +98,13 @@ var template = function () {
 		if (templateCode) {
 			var templateId = _toTemplateId(id)
 			/** DEBUG_INFO_START **/
-			if (_cacheTemplate[templateId]) {
+			if (_cacheTemplate[templateId] || _cacheCompiledTemplate[templateId]) {
 				console.warn('[Template] Template id "' + templateId + '" already existed.')
 			}
 			/** DEBUG_INFO_END **/
+			if (_cacheCompiledTemplate[templateId]) {
+				_cacheCompiledTemplate[templateId] = null
+			}
 			result = _cacheTemplate[templateId] = templateCode
 		} else {
 			//todo: support `_.template.add(id)` to add from dummy script element

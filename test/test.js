@@ -21,6 +21,10 @@ void function () {
 		'</ul>'
 	].join('\n')
 
+	//compiledTemplate
+	var fn1 = _.template(templateCode1)
+	var fn2 = _.template(templateCode2)
+
 	//template data
 	var templateData1 = {text: HELLO}
 	var templateData2 = [
@@ -328,7 +332,7 @@ void function () {
 				expect(_cacheTemplate).to.deep.equal(data)
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 			})
-			it('overwrites while adding existed template id', function () {
+			it('overwrites template while adding existed template id', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				data = {}
 
@@ -336,9 +340,22 @@ void function () {
 				data[TEMPLATE_ID_1] = templateCode1
 				expect(_cacheTemplate).to.deep.equal(data)
 
-				template.add(TEMPLATE_ID_2, templateCode2)
-				data[TEMPLATE_ID_2] = templateCode2
+				template.add(TEMPLATE_ID_1, templateCode2)
+				data[TEMPLATE_ID_1] = templateCode2
 				expect(_cacheTemplate).to.deep.equal(data)
+			})
+			it('overwrites compiledTemplate while adding existed template id', function () {
+				expect(_cacheCompiledTemplate).to.deep.equal({})
+
+				template.add(TEMPLATE_ID_1, templateCode1)
+				template.render(TEMPLATE_ID_1, templateData1)
+				expect(_cacheCompiledTemplate[TEMPLATE_ID_1].source).to.equal(fn1.source)
+
+				template.add(TEMPLATE_ID_1, templateCode2)
+				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.equal(null)
+				template.render(TEMPLATE_ID_1, templateData2)
+				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.be.a('function')
+				expect(_cacheCompiledTemplate[TEMPLATE_ID_1].source).to.equal(fn2.source)
 			})
 			it('does nothing if missing template code as second param', function () {
 				expect(_cacheTemplate).to.deep.equal({})
