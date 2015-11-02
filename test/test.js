@@ -21,10 +21,6 @@ void function () {
 		'</ul>'
 	].join('\n')
 
-	//compiledTemplate
-	var fn1 = _.template(templateCode1)
-	var fn2 = _.template(templateCode2)
-
 	//template data
 	var templateData1 = {text: HELLO}
 	var templateData2 = [
@@ -42,25 +38,14 @@ void function () {
 	].join('\n')
 
 	describe('Util', function () {
-		var _trim
-		var _include
-		var _startsWith
-		var _endsWith
-		var _toTemplateId
-		var _toElementId
-		var _isTemplateCode
-		var _stripCommentTag
-
-		before(function () {
-			_trim = template.__trim
-			_include = template.__include
-			_startsWith = template.__startsWith
-			_endsWith = template.__endsWith
-			_toTemplateId = template.__toTemplateId
-			_toElementId = template.__toElementId
-			_isTemplateCode = template.__isTemplateCode
-			_stripCommentTag = template.__stripCommentTag
-		})
+		var _trim = template.__trim
+		var _include = template.__include
+		var _startsWith = template.__startsWith
+		var _endsWith = template.__endsWith
+		var _toTemplateId = template.__toTemplateId
+		var _toElementId = template.__toElementId
+		var _isTemplateCode = template.__isTemplateCode
+		var _stripCommentTag = template.__stripCommentTag
 
 		describe('_trim()', function () {
 			it('removes all spaces from the beginning and end of the supplied string', function () {
@@ -270,7 +255,8 @@ void function () {
 
 		//test data
 		var data, html1, html2
-		var _cacheTemplate, _cacheCompiledTemplate
+		var _cacheTemplate = template.__cacheTemplate
+		var _cacheCompiledTemplate = template.__cacheCompiledTemplate
 
 		//string
 		function clean(str) {
@@ -282,7 +268,7 @@ void function () {
 			delete _cacheTemplate[TEMPLATE_ID_1]
 			delete _cacheTemplate[TEMPLATE_ID_2]
 		}
-		function clearCompileCache() {
+		function clearCompiledCache() {
 			delete _cacheCompiledTemplate[TEMPLATE_ID_1]
 			delete _cacheCompiledTemplate[TEMPLATE_ID_2]
 		}
@@ -305,17 +291,13 @@ void function () {
 			$elem2.remove()
 		}
 
-		before(function () {
-			_cacheTemplate = template.__cacheTemplate
-			_cacheCompiledTemplate = template.__cacheCompiledTemplate
-		})
 		beforeEach(function () {
 			clearCodeCache()
-			clearCompileCache()
+			clearCompiledCache()
 		})
 		after(function () {
 			clearCodeCache()
-			clearCompileCache()
+			clearCompiledCache()
 		})
 
 		describe('template.add()', function () {
@@ -332,7 +314,7 @@ void function () {
 				expect(_cacheTemplate).to.deep.equal(data)
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 			})
-			it('overwrites template while adding existed template id', function () {
+			it('updates cache while adding existed template id', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				data = {}
 
@@ -344,13 +326,15 @@ void function () {
 				data[TEMPLATE_ID_1] = templateCode2
 				expect(_cacheTemplate).to.deep.equal(data)
 			})
-			it('overwrites compiledTemplate while adding existed template id', function () {
+			it('updates compiled cache while adding existed template id', function () {
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 
+				var fn1 = _.template(templateCode1)
 				template.add(TEMPLATE_ID_1, templateCode1)
 				template.render(TEMPLATE_ID_1, templateData1)
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_1].source).to.equal(fn1.source)
 
+				var fn2 = _.template(templateCode2)
 				template.add(TEMPLATE_ID_1, templateCode2)
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.equal(null)
 				template.render(TEMPLATE_ID_1, templateData2)
