@@ -114,9 +114,18 @@ var template = function () {
 	}
 
 	//api
-	template.remove = function (/* id */) {
-		//todo: remove template from cache (both str and fn)
+	template.remove = function (id) {
 		//todo: remove dummy script element
+		if (!id) return false
+
+		var templateId = _toTemplateId(id)
+		if (!_cacheTemplate[templateId]) {
+			console.warn('[Template] Template id "' + templateId + '" can not be found.')
+			return false
+		}
+		
+		delete _cacheTemplate[templateId]
+		delete _cacheCompiledTemplate[templateId]
 	}
 	template.add = add
 	template.render = function (id, data) {

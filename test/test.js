@@ -352,6 +352,40 @@ void function () {
 			})
 		})
 
+		describe('template.remove()', function () {
+			it('returns false if template id is invalid or an empty string', function () {
+				var arg
+				arg = null
+				expect(template.remove(arg)).to.be.false
+				arg = undefined
+				expect(template.remove(arg)).to.be.false
+				arg = ''
+				expect(template.remove(arg)).to.be.false
+			})
+			it('returns false if template id is not found', function () {
+				var arg
+				arg = 'not-existed'
+				expect(template.remove(arg)).to.be.false
+			})
+			it('removes template from cache', function () {
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
+
+				//remove a template which is not compiled
+				template.add(TEMPLATE_ID_1, templateCode1)
+				template.remove(TEMPLATE_ID_1)
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
+
+				//remove a template which has been compiled
+				template.add(TEMPLATE_ID_2, templateCode2)
+				template.render(TEMPLATE_ID_2, templateData2)
+				template.remove(TEMPLATE_ID_2)
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})				
+			})
+		})
+
 		describe('template.render()', function () {
 			it('gets template from dom, renders, and saves to cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
