@@ -6,17 +6,17 @@
 var template = function () {
 	'use strict'
 
-	//namespace
+	// namespace
 	var template = {}
 
-	//config
+	// config
 	var ELEM_ID_PREFIX = 'template-'
 
-	//cache
+	// cache
 	var _cacheTemplate = {}
 	var _cacheCompiledTemplate = {}
 
-	//string function
+	// string function
 	function _trim(str) {
 		return str.replace(/^\s+|\s+$/g, '')
 	}
@@ -30,7 +30,7 @@ var template = function () {
 		return str.length > ends.length ? str.indexOf(ends) === (str.length - ends.length) : false
 	}
 
-	//util
+	// util
 	function _toTemplateId(id) {
 		//`#template-my-tpl-001` -> `my-tpl-001`
 		// `template-my-tpl-001` -> `my-tpl-001`
@@ -52,7 +52,7 @@ var template = function () {
 		}
 		return str
 	}
-	//get template by id (of dummy script element in html)
+	// get template by id (of dummy script element in html)
 	function _getTemplateById(id) {
 		if (!id) return false
 		var result
@@ -61,8 +61,8 @@ var template = function () {
 		if (elem) {
 			var str = _trim(elem.innerHTML)
 			if (str) {
-				//strip html comment tag wrapping template code
-				//especially for jedi 1.0 (https://github.com/baixing/jedi)
+				// strip html comment tag wrapping template code
+				// especially for jedi 1.0 (https://github.com/baixing/jedi)
 				if (_.templateSettings.shouldUnwrapCommentTag) str = _stripCommentTag(str)
 
 				if (_isTemplateCode(str)) {
@@ -89,9 +89,9 @@ var template = function () {
 		return _include(code, '<%') && _include(code, '%>') && /\bdata\b/.test(code)
 	}
 
-	//fn
+	// api
 	function add(id, templateCode) {
-		//todo: accept second param as a function, to support pre-compiled template.
+		// TODO: accept second param as a function, to support pre-compiled template.
 		if (arguments.length < 2) return false
 
 		var result
@@ -107,20 +107,13 @@ var template = function () {
 			}
 			result = _cacheTemplate[templateId] = templateCode
 		} else {
-			//todo: support `_.template.add(id)` to add from dummy script element
-			//console.error('Missing template code to add to cache.')
+			// TODO: support `_.template.add(id)` to add from dummy script element
+			// console.error('Missing template code to add to cache.')
 		}
 		return !!result
 	}
-
-	//api
-	template.remove = function (/* id */) {
-		//todo: remove template from cache (both str and fn)
-		//todo: remove dummy script element
-	}
-	template.add = add
-	template.render = function (id, data) {
-		//todo: support _.template.render(templateCode, templateData)
+	function render(id, data) {
+		// TODO: support _.template.render(templateCode, templateData)
 		if (arguments.length < 2) {
 			console.error('Missing data to render template: "' + id + '"')
 			return false
@@ -128,20 +121,20 @@ var template = function () {
 		var result
 		var templateId = _toTemplateId(id)
 
-		//todo: refactor: use recursion to simplify these codes
-		//search in _cacheCompiledTemplate
+		// TODO: refactor: use recursion to simplify these codes
+		// search in _cacheCompiledTemplate
 		var fn = _cacheCompiledTemplate[templateId]
 		var templateCode = _cacheTemplate[templateId]
 		if (_.isFunction(fn)) {
 			result = fn(data)
 		}
-		//search in _cacheTemplate
+		// search in _cacheTemplate
 		else if (_.isString(templateCode)) {
 			fn = _.template(templateCode)
 			_cacheCompiledTemplate[templateId] = fn
 			result = fn(data)
 		}
-		//get template code from dom
+		// get template code from dom
 		else {
 			templateCode = _getTemplateById(templateId)
 			if (templateCode) {
@@ -153,9 +146,13 @@ var template = function () {
 		}
 		return result || ''
 	}
+	
+	// exports
+	template.add = add
+	template.render = render
 
 	/** DEBUG_INFO_START **/
-	//exports for unit test
+	// exports for unit test
 	template.__trim = _trim
 	template.__include = _include
 	template.__startsWith = _startsWith
@@ -168,7 +165,7 @@ var template = function () {
 	template.__cacheCompiledTemplate = _cacheCompiledTemplate
 	/** DEBUG_INFO_END **/
 
-	//exports
+	// exports
 	return template
 
 }()
