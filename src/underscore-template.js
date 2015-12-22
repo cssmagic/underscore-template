@@ -16,7 +16,7 @@ var template = function () {
 	var _cacheTemplate = {}
 	var _cacheCompiledTemplate = {}
 
-	// string function
+	// util - string
 	function _trim(str) {
 		return str.replace(/^\s+|\s+$/g, '')
 	}
@@ -32,15 +32,19 @@ var template = function () {
 
 	// util
 	function _toTemplateId(id) {
-		//`#template-my-tpl-001` -> `my-tpl-001`
-		// `template-my-tpl-001` -> `my-tpl-001`
-		//          `my-tpl-001` -> `my-tpl-001`
+		/** example:
+			`#template-my-tmpl-001` -> `my-tmpl-001`
+			 `template-my-tmpl-001` -> `my-tmpl-001`
+			          `my-tmpl-001` -> `my-tmpl-001`
+		 */
 		id = id && _.isString(id) ? _trim(id).replace(/^[#!]+/, '') : ''
 		return _trim(id).replace(ELEM_ID_PREFIX, '')
 	}
 	function _toElementId(id) {
-		//`template-my-tpl-001` -> `template-my-tpl-001`
-		//         `my-tpl-001` -> `template-my-tpl-001`
+		/** example:
+			`template-my-tmpl-001` -> `template-my-tmpl-001`
+			         `my-tmpl-001` -> `template-my-tmpl-001`
+		 */
 		id = id && _.isString(id) ? _trim(id) : ''
 		return _startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
@@ -92,9 +96,14 @@ var template = function () {
 	// api
 	function add(id, templateCode) {
 		// TODO: accept second param as a function, to support pre-compiled template.
-		if (arguments.length < 2) return false
+		var result = false
+		if (arguments.length < 2) {
+			/** DEBUG_INFO_START **/
+			console.error('[Template] Missing param for `.add()` method.')
+			/** DEBUG_INFO_END **/
+			return result
+		}
 
-		var result
 		if (templateCode) {
 			var templateId = _toTemplateId(id)
 			/** DEBUG_INFO_START **/
@@ -105,20 +114,20 @@ var template = function () {
 			if (_cacheCompiledTemplate[templateId]) {
 				_cacheCompiledTemplate[templateId] = null
 			}
-			result = _cacheTemplate[templateId] = templateCode
-		} else {
-			// TODO: support `_.template.add(id)` to add from dummy script element
-			// console.error('Missing template code to add to cache.')
+			_cacheTemplate[templateId] = templateCode
+			result = true
 		}
-		return !!result
+		return result
 	}
 	function render(id, data) {
-		// TODO: support _.template.render(templateCode, templateData)
+		var result = ''
 		if (arguments.length < 2) {
-			console.error('Missing data to render template: "' + id + '"')
-			return false
+			/** DEBUG_INFO_START **/
+			console.error('[Template] Missing param for `.render()` method.')
+			/** DEBUG_INFO_END **/
+			return result
 		}
-		var result
+
 		var templateId = _toTemplateId(id)
 
 		// TODO: refactor: use recursion to simplify these codes
