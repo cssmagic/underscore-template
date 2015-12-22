@@ -133,15 +133,18 @@ var template = function () {
 			fn = _.template(templateCode)
 			_cacheCompiledTemplate[templateId] = fn
 			result = fn(data)
+			// clear _cacheTemplate
+			_cacheTemplate[templateId] = null
 		}
 		// get template code from dom
 		else {
 			templateCode = _getTemplateById(templateId)
 			if (templateCode) {
-				_cacheTemplate[templateId] = templateCode
 				fn = _.template(templateCode)
 				_cacheCompiledTemplate[templateId] = fn
 				result = fn(data)
+				// clear _cacheTemplate
+				_cacheTemplate[templateId] = null
 			}
 		}
 		return result || ''
