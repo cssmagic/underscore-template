@@ -78,7 +78,16 @@ var template = function () {
 	}
 	function _isTemplateCode(s) {
 		var code = String(s)
-		return _include(code, '<%') && _include(code, '%>') && /\bdata\b/.test(code)
+		var config = _.templateSettings
+		if (config.variable && _include(code, config.variable)) {
+			return true
+		} else {
+			return (
+				config.escape.test(code) ||
+				config.interpolate.test(code) ||
+				config.evaluate.test(code)
+			)
+		}
 	}
 
 	// api

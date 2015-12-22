@@ -209,6 +209,12 @@ void function () {
 				var code
 				code = '<%= data %>'
 				expect(_isTemplateCode(code)).to.be.true
+				code = '<% if (true) { %><p>...</p><% } %>'
+				expect(_isTemplateCode(code)).to.be.true
+				code = '<%= foo %>'
+				expect(_isTemplateCode(code)).to.be.true
+				code = '<%- bar %>'
+				expect(_isTemplateCode(code)).to.be.true
 
 				code = undefined
 				expect(_isTemplateCode(code)).to.be.false
