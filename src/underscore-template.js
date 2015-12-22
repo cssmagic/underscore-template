@@ -48,14 +48,6 @@ var template = function () {
 		id = id && _.isString(id) ? _trim(id) : ''
 		return _startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
-	function _stripCommentTag(str) {
-		str = String(str)
-		if (_startsWith(str, '<!' + '--') && _endsWith(str, '-->')) {
-			str = str.replace(/^<!\-\-/, '').replace(/\-\->$/, '')
-			str = _trim(str)
-		}
-		return str
-	}
 	// get template by id (of dummy script element in html)
 	function _getTemplateById(id) {
 		if (!id) return false
@@ -65,10 +57,6 @@ var template = function () {
 		if (elem) {
 			var str = _trim(elem.innerHTML)
 			if (str) {
-				// strip html comment tag wrapping template code
-				// especially for jedi 1.0 (https://github.com/baixing/jedi)
-				if (_.templateSettings.shouldUnwrapCommentTag) str = _stripCommentTag(str)
-
 				if (_isTemplateCode(str)) {
 					result = str
 				} else {
@@ -169,7 +157,6 @@ var template = function () {
 	template.__toTemplateId = _toTemplateId
 	template.__toElementId = _toElementId
 	template.__isTemplateCode = _isTemplateCode
-	template.__stripCommentTag = _stripCommentTag
 	template.__cacheTemplate = _cacheTemplate
 	template.__cacheCompiledTemplate = _cacheCompiledTemplate
 	/** DEBUG_INFO_END **/

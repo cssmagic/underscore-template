@@ -45,7 +45,6 @@ void function () {
 		var _toTemplateId = template.__toTemplateId
 		var _toElementId = template.__toElementId
 		var _isTemplateCode = template.__isTemplateCode
-		var _stripCommentTag = template.__stripCommentTag
 
 		describe('_trim()', function () {
 			it('removes all spaces from the beginning and end of the supplied string', function () {
@@ -221,30 +220,6 @@ void function () {
 				expect(_isTemplateCode(code)).to.be.false
 				code = '<p>foobar</p>'
 				expect(_isTemplateCode(code)).to.be.false
-			})
-		})
-		describe('_stripCommentTag()', function () {
-			it('strips outta html comment tag', function () {
-				var code
-				code = '<!-- foobar -->'
-				expect(_stripCommentTag(code)).to.equal('foobar')
-				code = '<!-- <p>foobar</p> -->'
-				expect(_stripCommentTag(code)).to.equal('<p>foobar</p>')
-			})
-			it('returns if not wrapped by comment tag', function () {
-				var code
-				code = undefined
-				expect(_stripCommentTag(code)).to.equal(String(code))
-				code = null
-				expect(_stripCommentTag(code)).to.equal(String(code))
-				code = ''
-				expect(_stripCommentTag(code)).to.equal(code)
-				code = '<%= data %>'
-				expect(_stripCommentTag(code)).to.equal(code)
-				code = 'foobar'
-				expect(_stripCommentTag(code)).to.equal(code)
-				code = '<p>foobar</p>'
-				expect(_stripCommentTag(code)).to.equal(code)
 			})
 		})
 	})
