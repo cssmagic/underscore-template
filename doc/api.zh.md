@@ -1,12 +1,14 @@
-# API 文档
+---
+title: "API 文档"
+---
 
-## 导言<a name="intro"></a>
+## 导言 <a name="intro">&nbsp;</a>
 
-#### 模板引擎
+#### 模板引擎 <a name="intro--template-engine">&nbsp;</a>
 
 模板引擎的作用是将数据渲染成为 HTML 代码片断，它将生成 HTML 代码的工作分解为“准备数据”和“编写模板”两个步骤，将开发者从繁重的字符串拼接任务中解脱出来。
 
-#### Underscore 的模板引擎
+#### Underscore 的模板引擎 <a name="intro--underscore">&nbsp;</a>
 
 Underscore 内置了一个小巧而完备的前端模板引擎（`_.template()`），而 Underscore-template 这个库则将它更好地融入了开发流程。
 
@@ -15,15 +17,15 @@ Underscore 内置了一个小巧而完备的前端模板引擎（`_.template()`�
 * [Underscore 模板引擎 API 官方文档](http://underscorejs.org/#template)
 * [中文注解](https://github.com/cssmagic/blog/issues/4)
 
-#### 功能简介
+#### 功能简介 <a name="intro--functionality">&nbsp;</a>
 
 这个库的主要作用是建立一个模板库，把页面中需要前端模板管理起来，以便在需要的时候调用。
 
 同时，它在内部做了一些性能优化，通过缓存来避免模板的重复编译。但这些优化对使用者来说是透明的，不需要特别操心。
 
-## JavaScript 接口<a name="js-api"></a>
+## JavaScript 接口 <a name="js-api">&nbsp;</a>
 
-### `template.add(id, template)`<a name="js-api-add"></a>
+### `template.add(id, template)`<a name="js-api--add"></a>
 
 定义一个模板，即将该模板纳入模板库，以便稍后使用。每个模板都需要有一个独一无二的 ID。
 
@@ -95,9 +97,9 @@ var html = template.render('my-list', todoList)
 </ul>
 ```
 
-## 开发流程
+## 开发流程 <a name="workflow">&nbsp;</a>
 
-#### 开发阶段
+#### 开发阶段 <a name="workflow--dev">&nbsp;</a>
 
 由于 JS 长期缺乏原生的多行字符串功能，在 JS 文件中编辑模板很不方便。因此，在实践中，开发者们普遍将模板代码写在 HTML 中。（如下所示，我们使用一个 `<script>` 标签来存放模板代码，并设置了一个非标准的 `type` 值来避免浏览器把它当作脚本执行。）
 
@@ -125,7 +127,7 @@ var html = template.render('my-list', todoList)
 var html = template.render('my-list', todoList)
 ```
 
-#### 部署到生产环境
+#### 部署到生产环境 <a name="workflow--deploy">&nbsp;</a>
 
 把模板代码写在 HTML 中，意味着这部分代码会随着 HTML 页面的多次加载而重复加载，且各页面不能共享相同的模板，导致不必要的流量消耗；而把模板代码存放在 JS 文件中，则可以充分利用客户端缓存。
 
