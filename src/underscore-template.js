@@ -73,18 +73,18 @@ var template = function () {
 	function _isTemplateCode(s) {
 		var code = String(s)
 		var config = _.templateSettings
-		if (config.variable && _include(code, config.variable)) {
-			return true
-		} else {
-			return (
-				config.escape.test(code) ||
-				config.interpolate.test(code) ||
-				config.evaluate.test(code)
-			)
-		}
+		return (
+			// it must contain any template tags
+			config.escape.test(code) ||
+			config.interpolate.test(code) ||
+			config.evaluate.test(code)
+		) && (
+			// it must contain variable name (if we have specified a variable name)
+			config.variable ? _include(code, config.variable) : true
+		)
 	}
 
-	// api
+	// API
 	function add(id, templateCode) {
 		// TODO: accept second param as a function, to support pre-compiled template.
 		var result = false

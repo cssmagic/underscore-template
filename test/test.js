@@ -207,14 +207,32 @@ void function () {
 				expect(_isTemplateCode(templateCode2)).to.be.true
 
 				var code
-				code = '<%= data %>'
+				code = '<%= data.foo %>'
 				expect(_isTemplateCode(code)).to.be.true
+				code = '<%- data.bar %>'
+				expect(_isTemplateCode(code)).to.be.true
+				code = '<% if (data.isValid) { %><p>...</p><% } %>'
+				expect(_isTemplateCode(code)).to.be.true
+
+				// if we have specified variable name
+				code = '<%= foo %>'
+				expect(_isTemplateCode(code)).to.be.false
+				code = '<%- bar %>'
+				expect(_isTemplateCode(code)).to.be.false
 				code = '<% if (true) { %><p>...</p><% } %>'
-				expect(_isTemplateCode(code)).to.be.true
+				expect(_isTemplateCode(code)).to.be.false
+
+				// if we have not specified variable name
+				var configVar = _.templateSettings.variable
+				_.templateSettings.variable = ''
 				code = '<%= foo %>'
 				expect(_isTemplateCode(code)).to.be.true
 				code = '<%- bar %>'
 				expect(_isTemplateCode(code)).to.be.true
+				code = '<% if (true) { %><p>...</p><% } %>'
+				expect(_isTemplateCode(code)).to.be.true
+				// restore config
+				_.templateSettings.variable = configVar
 
 				code = undefined
 				expect(_isTemplateCode(code)).to.be.false
