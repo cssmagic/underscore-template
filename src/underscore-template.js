@@ -51,37 +51,40 @@ var template = function () {
 	// get template by id (of dummy script element in html)
 	function _getTemplateById(id) {
 		if (!id) return false
-		var result
+		var result = ''
 		var elementId = _toElementId(String(id))
 		var elem = document.getElementById(elementId)
 		if (elem) {
-			var str = _trim(elem.innerHTML)
-			if (str) {
-				if (_isTemplateCode(str)) {
-					result = str
-				} else {
-					/** DEBUG_INFO_START **/
-					console.warn('[Template] Template code in element "#' + elementId + '" is invalid!')
-					/** DEBUG_INFO_END **/
-				}
-			} else {
-				/** DEBUG_INFO_START **/
+			result = _trim(elem.innerHTML)
+			/** DEBUG_INFO_START **/
+			if (!result) {
 				console.warn('[Template] Element "#' + elementId + '" is empty!')
-				/** DEBUG_INFO_END **/
+			} else if (!_isTemplateCode(result)) {
+				console.warn('[Template] Template code in element "#' + elementId + '" is invalid!')
 			}
+			/** DEBUG_INFO_END **/
 		} else {
 			/** DEBUG_INFO_START **/
 			console.warn('[Template] Element "#' + elementId + '" not found!')
 			/** DEBUG_INFO_END **/
 		}
-		return result || false
+		return result
 	}
 	function _isTemplateCode(s) {
 		var code = String(s)
-		return _include(code, '<%') && _include(code, '%>') && /\bdata\b/.test(code)
+		var config = _.templateSettings
+		return (
+			// it must contain any template tags
+			config.escape.test(code) ||
+			config.interpolate.test(code) ||
+			config.evaluate.test(code)
+		) && (
+			// it must contain variable name (if we have specified a variable name)
+			config.variable ? _include(code, config.variable) : true
+		)
 	}
 
-	// api
+	// API
 	function add(id, templateCode) {
 		// TODO: accept second param as a function, to support pre-compiled template.
 		var result = false
