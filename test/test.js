@@ -253,7 +253,9 @@ void function () {
 		var $body = $(document.body)
 
 		// test data
-		var data, html1, html2
+		var data
+		var html1
+		var html2
 		var _cacheTemplate = template.__cacheTemplate
 		var _cacheCompiledTemplate = template.__cacheCompiledTemplate
 
@@ -303,11 +305,11 @@ void function () {
 			it('adds template code to template cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
-				data = {}
 
 				template.add(TEMPLATE_ID_1, templateCode1)
 				template.add(TEMPLATE_ID_2, templateCode2)
 
+				data = {}
 				data[TEMPLATE_ID_1] = templateCode1
 				data[TEMPLATE_ID_2] = templateCode2
 				expect(_cacheTemplate).to.deep.equal(data)
@@ -352,7 +354,7 @@ void function () {
 		})
 
 		describe('template.render()', function () {
-			it('gets template from dom, renders, and saves to cache', function () {
+			it('gets template from dom, renders, and saves to compiled cache', function () {
 				expect(_cacheTemplate).to.deep.equal({})
 				expect(_cacheCompiledTemplate).to.deep.equal({})
 				prepareDummyScript()
@@ -365,15 +367,9 @@ void function () {
 				result2 = clean(result2)
 				expect(html2).to.equal(result2)
 
-				// check if template code saved to cache
-				data = {}
-				data[TEMPLATE_ID_1] = templateCode1
-				data[TEMPLATE_ID_2] = templateCode2
-				expect(_cacheTemplate[TEMPLATE_ID_1]).to.be.a('string')
-				expect(_cacheTemplate[TEMPLATE_ID_2]).to.be.a('string')
-				expect(_cacheTemplate).deep.equal(data)
-
-				// check if compiled template fn saved to cache
+				// only save to compiled cache
+				expect(_cacheTemplate[TEMPLATE_ID_1]).to.not.exist
+				expect(_cacheTemplate[TEMPLATE_ID_2]).to.not.exist
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.be.a('function')
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_2]).to.be.a('function')
 
@@ -392,13 +388,37 @@ void function () {
 				html1 = template.render(TEMPLATE_ID_1, templateData1)
 				expect(html1).to.equal(result1)
 				html2 = template.render(TEMPLATE_ID_2, templateData2)
-				html2 = html2.replace(/\s+/g, ' ')
-				result2 = result2.replace(/\s+/g, ' ')
+				html2 = clean(html2)
+				result2 = clean(result2)
 				expect(html2).to.equal(result2)
 
-				// check if compiled template fn saved to cache
+				// only save to compiled cache
+				expect(_cacheTemplate[TEMPLATE_ID_1]).to.not.exist
+				expect(_cacheTemplate[TEMPLATE_ID_2]).to.not.exist
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_1]).to.be.a('function')
 				expect(_cacheCompiledTemplate[TEMPLATE_ID_2]).to.be.a('function')
+			})
+			it('clears code cache after rendering', function () {
+				expect(_cacheTemplate).to.deep.equal({})
+				expect(_cacheCompiledTemplate).to.deep.equal({})
+
+				// add to code cache
+				// notice: there's no template in dom
+				template.add(TEMPLATE_ID_1, templateCode1)
+				template.add(TEMPLATE_ID_2, templateCode2)
+
+				data = {}
+				data[TEMPLATE_ID_1] = templateCode1
+				data[TEMPLATE_ID_2] = templateCode2
+				expect(_cacheTemplate).to.deep.equal(data)
+
+				// render template
+				html1 = template.render(TEMPLATE_ID_1, templateData1)
+				html2 = template.render(TEMPLATE_ID_2, templateData2)
+
+				// check if code cache is cleared
+				expect(_cacheTemplate[TEMPLATE_ID_1]).to.not.exist
+				expect(_cacheTemplate[TEMPLATE_ID_2]).to.not.exist
 			})
 			it('gets template from compiled cache, renders', function () {
 				expect(_cacheTemplate).to.deep.equal({})
@@ -411,23 +431,18 @@ void function () {
 
 				// render template
 				html1 = template.render(TEMPLATE_ID_1, templateData1)
-				expect(html1).to.equal(result1)
 				html2 = template.render(TEMPLATE_ID_2, templateData2)
-				html2 = html2.replace(/\s+/g, ' ')
-				result2 = result2.replace(/\s+/g, ' ')
-				expect(html2).to.equal(result2)
 
-				// clear code cache
+				// call this fn to ensure code cache is empty
 				// notice: there's no template in dom
-				// notice: now code cache is empty
 				clearCodeCache()
 
 				// render template
 				html1 = template.render(TEMPLATE_ID_1, templateData1)
 				expect(html1).to.equal(result1)
 				html2 = template.render(TEMPLATE_ID_2, templateData2)
-				html2 = html2.replace(/\s+/g, ' ')
-				result2 = result2.replace(/\s+/g, ' ')
+				html2 = clean(html2)
+				result2 = clean(result2)
 				expect(html2).to.equal(result2)
 			})
 		})

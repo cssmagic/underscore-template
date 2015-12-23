@@ -105,7 +105,7 @@ var template = function () {
 			if (_cacheCompiledTemplate[templateId]) {
 				_cacheCompiledTemplate[templateId] = null
 			}
-			_cacheTemplate[templateId] = templateCode
+			_cacheTemplate[templateId] = String(templateCode)
 			result = true
 		}
 		return result
@@ -129,16 +129,17 @@ var template = function () {
 			result = fn(data)
 		}
 		// search in _cacheTemplate
-		else if (_.isString(templateCode)) {
+		else if (templateCode) {
 			fn = _.template(templateCode)
 			_cacheCompiledTemplate[templateId] = fn
 			result = fn(data)
+			// clear _cacheTemplate
+			_cacheTemplate[templateId] = null
 		}
 		// get template code from dom
 		else {
 			templateCode = _getTemplateById(templateId)
 			if (templateCode) {
-				_cacheTemplate[templateId] = templateCode
 				fn = _.template(templateCode)
 				_cacheCompiledTemplate[templateId] = fn
 				result = fn(data)
