@@ -3,7 +3,7 @@
  * Released under the MIT license.
  * https://github.com/cssmagic/underscore-template
  */
-var template = function () {
+var template = (function () {
 	'use strict'
 
 	// namespace
@@ -48,7 +48,7 @@ var template = function () {
 		id = id && _.isString(id) ? _trim(id) : ''
 		return _startsWith(id, ELEM_ID_PREFIX) ? id : ELEM_ID_PREFIX + id
 	}
-	// get template by id (of dummy script element in html)
+	// get template by ID (of dummy script element in html)
 	function _getTemplateById(id) {
 		if (!id) return false
 		var result = ''
@@ -147,10 +147,6 @@ var template = function () {
 		}
 		return result || ''
 	}
-	
-	// exports
-	template.add = add
-	template.render = render
 
 	/** DEBUG_INFO_START **/
 	// exports for unit test
@@ -166,6 +162,8 @@ var template = function () {
 	/** DEBUG_INFO_END **/
 
 	// exports
+	template.add = add
+	template.render = render
 	return template
 
-}()
+}())
